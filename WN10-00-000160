@@ -1,0 +1,32 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures The Server Message Block (SMB) v1 protocol must be disabled on the system.
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-00-000160 
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+#checked if SMB1 was enabled and then disabled it 
+if ((Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol).State -eq 'enabled') {
+    Enable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol -NoRestart
+    Write-Output "SMBv1 was enabled and has now been disabled."
+} else {
+    Write-Output "SMBv1 is already enabled."
+} 
