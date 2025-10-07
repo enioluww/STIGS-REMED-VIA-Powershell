@@ -1,0 +1,42 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures thatThe System event log size must be configured to 32768 KB or greater.
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000039 
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+
+# created a list of paths to update registry values in 
+
+$paths = ("HKLM:\SOFTWARE\Classes\batfile\shell\runasuser\","HKLM:\SOFTWARE\Classes\cmdfile\shell\runasuser\","HKLM:\SOFTWARE\Classes\exefile\shell\runasuser\","HKLM:\SOFTWARE\Classes\mscfile\shell\runasuser\")
+
+# iterated through each path and created it if didnt exist 
+foreach( $path in $paths){
+    if (-not (Test-Path $path)){
+    New-Item -Path $path -Force | Out-Null
+
+}
+
+# added the "suppression policy key"
+Set-ItemProperty -Path $path  -Name SuppressionPolicy -value 0x00001000 -Type Dword
+Get-ItemProperty -Path $path | Select-Object SuppressionPolicy
+} 
