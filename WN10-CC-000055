@@ -1,0 +1,49 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures that Insecure logons to an SMB server must be disabled.
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-CC-000055 
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+# Run PowerShell as Administrator
+
+
+# Define registry path
+$KeyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WcmSvc\GroupPolicy"
+
+# Create the registry path if it doesn't exist
+if (-not (Test-Path $KeyPath)) {
+    New-Item -Path $KeyPath -Force | Out-Null
+}
+
+# Check if fMinimizeConnections exists
+if (-not (Get-ItemProperty -Path $KeyPath -Name "fMinimizeConnections" -ErrorAction SilentlyContinue)) {
+    # Create the registry value if missing
+    New-ItemProperty -Path $KeyPath -Name "fMinimizeConnections" -Value 3 -PropertyType DWord | Out-Null
+} else {
+    # Update the registry value if it already exists
+    Set-ItemProperty -Path $KeyPath -Name "fMinimizeConnections" -Value 3
+}
+
+# Confirm the change
+Get-ItemProperty -Path $KeyPath | Select-Object fMinimizeConnections
+ 
