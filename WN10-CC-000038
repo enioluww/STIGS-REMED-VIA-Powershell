@@ -1,0 +1,40 @@
+ 
+<#
+.SYNOPSIS
+    This PowerShell script ensures that WDigest Authentication is disabled.
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         :  WN10-CC-000038 
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+#define file path 
+
+$path =  "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\Wdigest\"
+
+
+If (-not (Test-Path $path)){
+    New-Item -Path $path -Force| Out-Null
+}
+
+# enableWdigest
+Set-ItemProperty -Path $path -Name "UseLogonCredential" -Type Dword -Value 0x00000000
+
+Get-ItemProperty -Path $path | Select-Object UseLogonCredential 
