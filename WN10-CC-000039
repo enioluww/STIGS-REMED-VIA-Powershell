@@ -1,6 +1,6 @@
  <#
 .SYNOPSIS
-    This PowerShell script ensures thatThe System event log size must be configured to 32768 KB or greater.
+    This PowerShell script ensures that Run as different user must be removed from context menus.
 .NOTES
     Author          : Enioluwa akinwande
     LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
