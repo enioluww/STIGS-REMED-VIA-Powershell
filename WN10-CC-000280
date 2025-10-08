@@ -1,0 +1,36 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures Remote Desktop Services must always prompt a client for passwords upon connection.
+
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : WN10-CC-000280
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+
+$paths = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services\"
+
+
+If (-not (Test-Path $paths)){
+    New-Item $paths
+}
+
+Set-ItemProperty -Path $paths -Name "fPromptForPassword" -Value 0x00000001 -Type Dword
+
+Write-Output "Remote Desktop Services Will  always prompt a client for passwords upon connection." 
