@@ -1,0 +1,33 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures Windows 10 must be configured to prioritize ECC Curves with longer key lengths first.
+
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : WN10-CC-000052
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+$paths = "HKLM:\SOFTWARE\Policies\Microsoft\Cryptography\Configuration\SSL\00010002\"
+
+
+if( -not (Test-Path($paths))){
+    New-Item $paths
+}
+Set-ItemProperty -Path $paths -Name "EccCurves" -Value ([string[]]("NistP384","NistP256"))
+Write-Output "  display of slide shows on the lock screen has been disabled" 
