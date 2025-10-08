@@ -1,0 +1,33 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures File Explorer heap termination on corruption has been disabled".
+
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : WN10-CC-000220
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+$paths = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer\"
+
+
+if( -not (Test-Path($paths))){
+    New-Item $paths
+}
+Set-ItemProperty -Path $paths -Name "NoHeapTerminationOnCorruption" -Value 0x00000000  -Type Dword 
+Write-Output " File Explorer heap termination on corruption has been disabled" 
