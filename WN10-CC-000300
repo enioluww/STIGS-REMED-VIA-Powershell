@@ -1,0 +1,53 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures Users must not be allowed to ignore Windows Defender SmartScreen filter warnings for malicious websites in Microsoft Edge.
+
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : WN10-CC-000300
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+$path = "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Feeds"
+
+# Check if the registry path exists
+if (-not (Test-Path $path)) {
+    Write-Output "Path not found. Creating..."
+    New-Item -Path $path -Force | Out-Null
+}
+
+# Check if the property exists
+try {
+    $value = Get-ItemPropertyValue -Path $path -Name "AllowBasicAuthInClear" -ErrorAction Stop
+} catch {
+    Write-Output "Property not found. Creating and setting to 0..."
+    New-ItemProperty -Path $path -Name "AllowBasicAuthInClear" -Value 0 -PropertyType DWord -Force | Out-Null
+    $value = 0
+}
+
+# Evaluate the value
+if ($value -eq 0) {
+    Write-Output "This is not a finding. (AllowBasicAuthInClear = 0)"
+} elseif ($value -eq 1) {
+    Write-Output "Finding detected. Remediating..."
+    Set-ItemProperty -Path $path -Name "AllowBasicAuthInClear" -Value 0 -Type DWord
+    Write-Output "Remediation complete. (AllowBasicAuthInClear set to 0)"
+} else {
+    Write-Output "Unexpected value detected ($value). Resetting to 0..."
+    Set-ItemProperty -Path $path -Name "AllowBasicAuthInClear" -Value 0 -Type DWord
+}
+ 
