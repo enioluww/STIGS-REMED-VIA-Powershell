@@ -1,0 +1,31 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures display of slide shows on the lock screen has been disabled
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : WN10-CC-000010
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+$paths = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization\"
+
+if( -not (Test-Path($paths))){
+    New-Item $paths
+}
+Set-ItemProperty -Path $paths -Name "NoLockScreenSlideshow" -Value 1 -Type Dword
+Write-Output "  display of slide shows on the lock screen has been disabled" 
