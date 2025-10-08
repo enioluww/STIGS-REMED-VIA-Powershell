@@ -1,6 +1,6 @@
  <#
 .SYNOPSIS
-    This PowerShell script ensures that Windows 10 is configured to enable Remote Host to allow delegation of non-exportable credentials.
+    This PowerShell script ensures Windows 10 must be configured to enable Remote host allows delegation of non-exportable credentials.
 
 .NOTES
     Author          : Enioluwa akinwande
@@ -27,7 +27,7 @@
 
 
 $path = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CredentialsDelegation\"
-$Name =  "DisableIPSourceRouting"
+$Name =  "AllowProtectedCreds"
 $Value = 0x00000001
 
 
