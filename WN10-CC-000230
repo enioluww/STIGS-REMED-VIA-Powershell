@@ -1,0 +1,33 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures Users must not be allowed to ignore Windows Defender SmartScreen filter warnings for malicious websites in Microsoft Edge.
+
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : WN10-CC-000230
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+$paths = "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\PhishingFilter\"
+
+
+if( -not (Test-Path $paths)){
+    New-Item -Path $paths 
+}
+Set-ItemProperty -Path $paths -Name "PreventOverride" -Value 0  -Type Dword 
+Write-Output " Users will not be allowed to ignore Windows Defender SmartScreen filter warnings for malicious websites in Microsoft Edge" 
