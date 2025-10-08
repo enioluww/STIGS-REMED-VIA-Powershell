@@ -1,0 +1,34 @@
+ <#
+.SYNOPSIS
+    This PowerShell script ensures The Secondary Logon service must be disabled on Windows 10.
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : N/A
+    STIG-ID         : WN10-00-000175 
+
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+#### note : windows doesnt actually allow you run this because windows doeto stop or disable a critical Windows service like seclogon (Secondary Logon) so you can remove the -status stoppped and reboot after you run the script 
+
+if ((Get-Service -Name seclogon).Status -eq 'Running') {
+    Set-Service -Name seclogon -StartupType Disabled -Status Stopped
+    Write-Output "Secondary Logon was enabled and has now been disabled."
+} else {
+    Write-Output "Secondary Logon is already disabled ."
+    } 
