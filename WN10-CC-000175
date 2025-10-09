@@ -1,0 +1,43 @@
+  <#
+.SYNOPSIS
+    This PowerShell script ensuresThe network selection user interface (UI) must not be displayed on the logon screen.
+
+.NOTES
+    Author          : Enioluwa akinwande
+    LinkedIn        : https://www.linkedin.com/in/enioluwa-akinwande-a5b597254/
+    GitHub          : https://github.com/enioluww/
+    Date Created    : 2024-10-06
+    Last Modified   : 2024-10-06
+    Version         : 1.0
+    CVEs            : N/A
+    Plugin IDs      : WN10-CC-000175 
+.TESTED ON
+    Date(s) Tested  : 
+    Tested By       : 
+    Systems Tested  : 
+    PowerShell Ver. : 
+
+.USAGE
+    Put any usage instructions here.
+    Example syntax:
+    PS C:\> .\__remediation_template( WN10-AU-000510).ps1 
+#>
+
+
+
+
+$path = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppCompat\"
+$Name =  "DisableInventory"
+$Value = 1
+
+
+if( -not (Test-Path $path)){
+
+    New-Item -Path $path -Force | Out-Null
+}
+
+Set-ItemProperty -Path $path -Name $Name -Value $Value  -Type Dword 
+
+Write-Output " The Application Compatibility Program Inventory will  be prevented from collecting data and sending the information to Microsoft.......... "
+
+Get-ItemPropertyValue -Path $path -Name $Name  
